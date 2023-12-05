@@ -39,4 +39,18 @@ public class EmployeeController {
 
     }
 
+    //build update employee rest api
+    @PutMapping("/employees/{id}")
+    public ResponseEntity<Employee> updateEmployee( @PathVariable long id,@RequestBody Employee employeeDetails){
+        Employee updateEmployee = employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id: " + id));
+
+        updateEmployee.setFirstName(employeeDetails.getFirstName());
+        updateEmployee.setLastName(employeeDetails.getLastName());
+        updateEmployee.setEmailId(employeeDetails.getEmailId());
+
+        employeeRepository.save(updateEmployee);
+        return ResponseEntity.ok(updateEmployee);
+    }
+
 }
